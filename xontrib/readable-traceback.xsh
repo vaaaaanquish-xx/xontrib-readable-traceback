@@ -1,10 +1,24 @@
-# -*- coding: utf-8 -*-
 import xonsh.tools
 import backtrace
 import sys
 from colorama import init, Fore, Style
 
 $XONSH_SHOW_TRACEBACK=True
+
+# backtrace usage : https://github.com/nir0s/backtrace#usage
+$READABLE_TRACE_STYLES={
+        'backtrace': Fore.YELLOW + '{0}',
+        'error': Fore.RED + Style.BRIGHT + '{0}',
+        'line': Fore.RED + Style.BRIGHT + '{0}',
+        'module': '{0}',
+        'context': Style.BRIGHT + Fore.GREEN + '{0}',
+        'call': Fore.RED + '--> ' + Fore.YELLOW + Style.BRIGHT + '{0}'}
+$READABLE_TRACE_REVERSE=False
+$READABLE_TRACE_ALIGN=False
+$READABLE_TRACE_STRIP_PATH=False
+$READABLE_TRACE_ENVVAR_ONLY=False
+$READABLE_TRACE_ON_TTY=False
+$READABLE_TRACE_CONSERVATIVE=False
 
 
 def __flush(message):
@@ -14,6 +28,7 @@ def __flush(message):
     """
     st = message + '\n'
     sys.stderr.buffer.write(st.encode(encoding="utf-8"))
+    sys.stderr.flush()
 backtrace._flush=__flush
 
 
@@ -22,15 +37,17 @@ def _print_exception(msg=None):
     Origin: https://github.com/xonsh/xonsh/blob/230f77b2bc64cbc3e04837377252793f5d09b9ba/xonsh/tools.py#L798
     """
     tpe, v, tb = sys.exc_info()
-    STYLES = {
-        'backtrace': Fore.YELLOW + '{0}',
-        'error': Fore.RED + Style.BRIGHT + '{0}',
-        'line': Fore.RED + Style.BRIGHT + '{0}',
-        'module': '{0}',
-        'context': Style.BRIGHT + Fore.GREEN + '{0}',
-        'call': Fore.RED + '--> ' + Fore.YELLOW + Style.BRIGHT + '{0}',
-    }
-    backtrace.hook(tb=tb, tpe=tpe, value=v, strip_path=True, styles=STYLES)
+    backtrace.hook(
+        tb=tb,
+        tpe=tpe,
+        value=v,
+        reverse=$READABLE_TRACE_REVERSE,
+        align=$READABLE_TRACE_ALIGN,
+        strip_path=$READABLE_TRACE_STRIP_PATH,
+        enable_on_envvar_only=$READABLE_TRACE_ENVVAR_ONLY,
+        on_tty=$READABLE_TRACE_ON_TTY,
+        conservative=$READABLE_TRACE_CONSERVATIVE,
+        styles=$READABLE_TRACE_STYLES)
     if msg:
         msg = msg if msg.endswith('\n') else msg + '\n'
         sys.stderr.write(msg)
