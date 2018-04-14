@@ -22,7 +22,7 @@ $READABLE_TRACE_STYLES={
         'call': Fore.RED + '--> ' + Fore.YELLOW + Style.BRIGHT + '{0}'}
 $READABLE_TRACE_REVERSE=False
 $READABLE_TRACE_ALIGN=False
-$READABLE_TRACE_STRIP_PATH=False
+$READABLE_TRACE_STRIP_PATH_ENV=False
 $READABLE_TRACE_ENVVAR_ONLY=False
 $READABLE_TRACE_ON_TTY=False
 $READABLE_TRACE_CONSERVATIVE=False
@@ -70,7 +70,7 @@ def _print_exception(msg=None):
             value=v,
             reverse=$READABLE_TRACE_REVERSE,
             align=$READABLE_TRACE_ALIGN,
-            strip_path=$READABLE_TRACE_STRIP_PATH,
+            strip_path=$READABLE_TRACE_STRIP_PATH_ENV,
             enable_on_envvar_only=$READABLE_TRACE_ENVVAR_ONLY,
             on_tty=$READABLE_TRACE_ON_TTY,
             conservative=$READABLE_TRACE_CONSERVATIVE,
