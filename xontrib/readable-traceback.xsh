@@ -9,6 +9,7 @@ import os
 from colorama import init, Fore, Style
 
 $XONSH_SHOW_TRACEBACK=True
+$XONSH_TRACEBACK_LOGFILE=None
 
 # backtrace usage : https://github.com/nir0s/backtrace#usage
 $READABLE_TRACE_STYLES={
@@ -31,7 +32,8 @@ def __flush(message):
     Reason please see TeeClass: https://github.com/xonsh/xonsh/blob/ff05ec33a22c1688674616a84ef66d65cef5b3c5/xonsh/base_shell.py#L217
     Origin: https://github.com/nir0s/backtrace/blob/f2c8683ec53e4fa48ea8c99c196b201bf22fda3e/backtrace.py#L36
     """
-    st = message + '\n'
+    rep = lambda s: '' if '__amalgam__.py' in s or 'readable-traceback.xsh' in s else s+'\n'
+    st = ''.join([rep(s) for s in message.split('\n')])
     sys.stderr.buffer.write(st.encode(encoding="utf-8"))
     sys.stderr.flush()
 backtrace._flush=__flush
