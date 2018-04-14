@@ -1,6 +1,11 @@
+import builtins
 import xonsh.tools
+from xonsh.platform import os_environ
+from xonsh.tools import to_logfile_opt
+import traceback
 import backtrace
 import sys
+import os
 from colorama import init, Fore, Style
 
 $XONSH_SHOW_TRACEBACK=True
@@ -36,6 +41,22 @@ def _print_exception(msg=None):
     """Override xonsh.tools.print_exception.
     Origin: https://github.com/xonsh/xonsh/blob/230f77b2bc64cbc3e04837377252793f5d09b9ba/xonsh/tools.py#L798
     """
+    # log_file
+    env = getattr(builtins, '__xonsh_env__', None)
+    if env is None:
+        manually_set_logfile = 'XONSH_TRACEBACK_LOGFILE' in env
+    else:
+        manually_set_logfile = env.is_manually_set('XONSH_TRACEBACK_LOGFILE')
+    if not manually_set_logfile:
+        log_msg = 'xonsh: To log full traceback to a file set: $XONSH_TRACEBACK_LOGFILE = <filename>\n'
+        sys.stderr.buffer.write(log_msg.encode(encoding="utf-8"))
+    log_file = env.get('XONSH_TRACEBACK_LOGFILE', None)
+    log_file = to_logfile_opt(log_file)
+    if log_file:
+        with open(log_file, 'a') as f:
+            traceback.print_exc(file=f)
+    
+    #backtrace_hock
     tpe, v, tb = sys.exc_info()
     backtrace.hook(
         tb=tb,
