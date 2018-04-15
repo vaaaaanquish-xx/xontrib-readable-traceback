@@ -11,7 +11,7 @@ Simple division by zero error.
 <img src='https://github.com/vaaaaanquish/xontrib-readable-traceback/blob/master/sample_img/division.png?raw=true'>
 
 example:
-This simple error produces a stacktrace containing 28 lines. That's it.
+This simple pandas error produces a stacktrace containing 28 lines. But xontrib load...
 
 <img src='https://github.com/vaaaaanquish/xontrib-readable-traceback/blob/master/sample_img/pandas.png?raw=true' width='450px'>
 
