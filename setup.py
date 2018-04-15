@@ -10,7 +10,7 @@ install_requires = ['backtrace', 'colorama']
 
 setup(
     name='xontrib-readable-traceback',
-    version='0.2.0',
+    version='0.2.1',
     description='Makc Traceback easier to see for xonsh.',
     long_description=long_description,
     url='https://github.com/vaaaaanquish/xontrib-readable-traceback',
