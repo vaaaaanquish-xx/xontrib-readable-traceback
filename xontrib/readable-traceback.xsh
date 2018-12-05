@@ -47,7 +47,7 @@ def _print_exception(msg=None):
     Origin: https://github.com/xonsh/xonsh/blob/230f77b2bc64cbc3e04837377252793f5d09b9ba/xonsh/tools.py#L798
     """
     # log_file
-    env = getattr(builtins, '__xonsh_env__', None)
+    env = __xonsh__.env
     if env is None:
         manually_set_logfile = 'XONSH_TRACEBACK_LOGFILE' in env
     else:
